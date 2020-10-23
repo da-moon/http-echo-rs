@@ -1,0 +1,39 @@
+{
+    "name": "http-echo-rs dev environment",
+    "build": {
+        "dockerfile": "../contrib/gitpod/Dockerfile"
+    },
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "lldb.executable": "/usr/bin/lldb",
+        "files.watcherExclude": {
+            "**/target/**": true
+        }
+    },
+    // "workspaceMount": "source=/absolute/path/on/remote/machine,target=/workspace,type=bind,consistency=cached",
+    // "workspaceFolder": "/workspace",
+    "extensions": [
+        "rust-lang.rust",
+        "bungcip.better-toml",
+        "vadimcn.vscode-lldb",
+        "mutantdino.resourcemonitor",
+        "TabNine.tabnine-vscode"
+    ],
+    "forwardPorts": [
+        9090,
+        7070,
+        6060,
+        8080,
+        8200
+    ],
+    "mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    ],
+    "runArgs": [
+        "--cap-add=SYS_PTRACE",
+        "--security-opt",
+        "seccomp=unconfined"
+    ],
+    "remoteUser": "root",
+    "postCreateCommand": "uname -a && rustc --version"
+}

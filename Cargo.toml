@@ -1,0 +1,12 @@
+[package]
+name = "http-echo"
+version = "0.1.0"
+authors = ["da-moon <damoon.azarpazhooh@ryerson.ca>"]
+edition = "2018"
+
+[dependencies]
+clap = "2.33.3"
+actix-rt = "1.1.1"
+env_logger = "0.7.1"
+version = { path = "version" }
+server = { path = "server" }

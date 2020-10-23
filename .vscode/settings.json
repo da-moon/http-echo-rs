@@ -1,0 +1,25 @@
+{
+    "editor.formatOnSave": true,
+    // "emeraldwalk.runonsave": {
+    //     "autoClearConsole": true,
+    //     "commands": [
+    //         {
+    //             "isAsync": true,
+    //             "match": "\\.go$",
+    //             // "cmd": "echo $PWD"
+    //             "cmd": "gofmt  -w ."
+    //         }
+    //         // ,
+    //         // {
+    //         //     "match": "\\.go$",
+    //         //     "isAsync": true,
+    //         //     "cmd": "gocmt -i -d ."
+    //         // }
+    //     ]
+    // },
+    "cSpell.words": [
+        "github"
+       
+    ],
+    "docker.host": "ssh://damoon@dev-machine.us-east1-d.playground-259617",
+}
