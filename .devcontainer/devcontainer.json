@@ -10,8 +10,6 @@
             "**/target/**": true
         }
     },
-    // "workspaceMount": "source=/absolute/path/on/remote/machine,target=/workspace,type=bind,consistency=cached",
-    // "workspaceFolder": "/workspace",
     "extensions": [
         "rust-lang.rust",
         "bungcip.better-toml",
