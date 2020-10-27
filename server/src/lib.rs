@@ -80,11 +80,9 @@ async fn index(state: web::Data<State>) -> HttpResponse {
     debug!("/ -> worker {}", state.worker_number);
     let updated_request_counter = state.request_counter.get() + 1;
     state.request_counter.set(updated_request_counter);
-    let body = format!("{}", state.text.as_str());
-
     HttpResponse::Ok()
         .content_type("text/plain")
         .header(HTTP_HEADER_APP_NAME, state.name.as_str())
         .header(HTTP_HEADER_APP_VERSION, state.version.as_str())
-        .body(body)
+        .body(&state.text)
 }
