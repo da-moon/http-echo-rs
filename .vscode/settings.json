@@ -19,7 +19,6 @@
     // },
     "cSpell.words": [
         "github"
-       
     ],
-    "docker.host": "ssh://damoon@dev-machine.us-east1-d.playground-259617",
+    "docker.host": "ssh://docker-host",
 }
