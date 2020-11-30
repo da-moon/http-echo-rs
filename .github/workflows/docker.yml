@@ -25,8 +25,7 @@ jobs:
           --build-arg "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER" \
           --build-arg "GITHUB_ACTOR=$GITHUB_ACTOR" \
           --build-arg "GITHUB_TOKEN=$GITHUB_TOKEN" \
-          -t fjolsvin/http-echo-rs:latest \
-          -t fjolsvin/http-echo-rs:`git describe --tags` \
+          -t fjolsvin/http-echo-rs:latest
           ./contrib/docker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,8 +45,7 @@ jobs:
       - name: Push Docker Image | http-echo-rs
         id: push
         run: |
-          docker push fjolsvin/http-echo-rs:latest && \
-          docker push fjolsvin/http-echo-rs:`git describe --tags`
+          docker push fjolsvin/http-echo-rs:latest
   clean:
     runs-on: ubuntu-18.04
     needs: push
