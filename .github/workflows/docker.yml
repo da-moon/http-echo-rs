@@ -7,6 +7,13 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
+      - name: Install Dependencies | http-echo-rs
+        id: dependencies
+        run: |
+          sudo apt-get update -q && 
+          sudo apt-get install build-essential ncurses make -yq
+        env:
+          DEBIAN_FRONTEND: noninteractive
       - uses: actions/checkout@v2
         with:
           ref: master
