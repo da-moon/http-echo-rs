@@ -1,4 +1,4 @@
-name: Deployment
+name: docker-image
 on:
   push:
     tags:
@@ -9,24 +9,28 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: master
+      - name: Build Docker Container | http-echo-rs
+        id: build
+        run: |
+          make image
+  push:
+    needs: build
+      - uses: actions/checkout@v2
+        with:
+          ref: master
       - name: Login to Docker Container Repository
         id: login
         run: echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build Docker Container | http-echo-rs
-        id: build
-        run: |
-          make docker
       - name: Push Docker Image | http-echo-rs
         id: push
         run: |
           make push-image
   clean:
-    needs: build
+    needs: push
     steps:
-      - uses: actions/checkout@v2
       - name: Remove Docker Images
         id: postClean
         run: |

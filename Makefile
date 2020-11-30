@@ -78,11 +78,14 @@ endif
 	- $(eval command=$(command) && $(PWD)/target/release/entrypoint --version)
 	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)${command}$(sgr0)\n'
 	$(command)
+.PHONY: image
+.SILENT: image
 image:
 ifeq (, $(shell which docker))
 	- $(error "'docker' not found in path. aborting ...")
 endif
 	- $(eval command=docker rmi fjolsvin/$(PROJECT_NAME):$(VERSION) --force)
+	- $(eval command=$(command) && docker rmi fjolsvin/$(PROJECT_NAME):latest --force)
 	- $(eval command=$(command) && docker system prune --force)
 	- $(eval command=$(command) && [ -r $(PWD)/.env ] && source $(PWD)/.env || true )
 	- $(eval command=$(command) && docker build)
@@ -98,6 +101,8 @@ endif
 	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)$(command)$(sgr0)\n'
 	$(command)
 push-image:
+.PHONY: push-image
+.SILENT: push-image
 ifeq (, $(shell which docker))
 	- $(error "'docker' not found in path. aborting ...")
 endif
