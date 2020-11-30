@@ -20,7 +20,16 @@ jobs:
       - name: Build Docker Container | http-echo-rs
         id: build
         run: |
-          make image
+          docker build \
+          --build-arg "GITHUB_REPOSITORY=$GITHUB_REPOSITORY" \
+          --build-arg "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER" \
+          --build-arg "GITHUB_ACTOR=$GITHUB_ACTOR" \
+          --build-arg "GITHUB_TOKEN=$GITHUB_TOKEN" \
+          -t fjolsvin/http-echo-rs:latest \
+          -t fjolsvin/http-echo-rs:`git describe --tags` \
+          ./contrib/docker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   push:
     runs-on: ubuntu-18.04
     needs: build
@@ -37,7 +46,8 @@ jobs:
       - name: Push Docker Image | http-echo-rs
         id: push
         run: |
-          make push-image
+          docker push fjolsvin/http-echo-rs:latest && \
+          docker push fjolsvin/http-echo-rs:`git describe --tags`
   clean:
     runs-on: ubuntu-18.04
     needs: push
