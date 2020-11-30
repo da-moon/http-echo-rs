@@ -11,7 +11,7 @@ jobs:
         id: dependencies
         run: |
           sudo apt-get update -q && 
-          sudo apt-get install build-essential ncurses make -yq
+          sudo apt-get install build-essential libncurses5-dev libncursesw5-dev make -yq
         env:
           DEBIAN_FRONTEND: noninteractive
       - uses: actions/checkout@v2
