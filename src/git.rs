@@ -10,3 +10,13 @@ pub fn tag<P: AsRef<Path>>(topdir: P) -> Result<String, Error> {
     let descr = repo.describe(&options)?;
     Ok(descr.format(None)?)
 }
+mod tests {
+    #[allow(unused_imports)]
+    use super::tag;
+    #[test]
+    fn should_have_tag() {
+        let latest_tag = tag(".").expect("fetch git version");
+        println!("tag: {}", latest_tag);
+        assert_ne!("", latest_tag)
+    }
+}
