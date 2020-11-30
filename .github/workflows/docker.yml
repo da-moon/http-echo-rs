@@ -25,7 +25,7 @@ jobs:
           --build-arg "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER" \
           --build-arg "GITHUB_ACTOR=$GITHUB_ACTOR" \
           --build-arg "GITHUB_TOKEN=$GITHUB_TOKEN" \
-          -t fjolsvin/http-echo-rs:latest
+          -t fjolsvin/http-echo-rs:latest \
           ./contrib/docker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
