@@ -28,7 +28,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
     apk add build-base make git bash ncurses upx
 RUN git clone "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY_OWNER/$GITHUB_REPOSITORY.git" "/workspace/$GITHUB_REPOSITORY"
 WORKDIR "/workspace/$GITHUB_REPOSITORY"
-RUN make release
+RUN make build
 RUN echo "nobody:x:65534:65534:Nobody:/:" > /etc_passwd
 FROM scratch
 ARG GITHUB_REPOSITORY

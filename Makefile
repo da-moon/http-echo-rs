@@ -61,9 +61,9 @@ clean:
 	- $(eval command=rm -rf $(PWD)/target)
 	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)${command}$(sgr0)\n'
 	$(command)
-.PHONY: release
-.SILENT: release
-release: clean
+.PHONY: build
+.SILENT: build
+build: clean
 ifeq (, $(shell  which cargo))
 	- $(error "'cargo'not found in path. aborting ...")
 endif
@@ -78,9 +78,7 @@ endif
 	- $(eval command=$(command) && $(PWD)/target/release/entrypoint --version)
 	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)${command}$(sgr0)\n'
 	$(command)
-.PHONY: docker
-.SILENT: docker
-docker:
+image:
 ifeq (, $(shell which docker))
 	- $(error "'docker' not found in path. aborting ...")
 endif
@@ -91,11 +89,21 @@ endif
 	- $(eval command=$(command) --build-arg GITHUB_REPOSITORY_OWNER=$(GIT_USER_NAME))
 	- $(eval command=$(command) --build-arg GITHUB_REPOSITORY=$(PROJECT_NAME))
 	- $(eval command=$(command) --build-arg GITHUB_ACTOR=$(GIT_USER_NAME))
-	- $(eval command=$(command) --build-arg GITHUB_TOKEN=$$GITHUB_TOKEN)
-	- $(eval command=$(command) -t fjolsvin/$(PROJECT_NAME):$(VERSION) $(PWD)/contrib/docker)
-	- $(eval command=$(command) && unset $$GITHUB_TOKEN)
-	- $(eval command=$(command) && [ -r ~/.docker/config.json ] && docker push fjolsvin/$(PROJECT_NAME):$(VERSION) )
-	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)${command}$(sgr0)\n'
+	- $(eval command=$(command) --build-arg GITHUB_TOKEN=`printenv "GITHUB_TOKEN"`)
+	- $(eval command=$(command) -t fjolsvin/$(PROJECT_NAME):$(VERSION))
+	- $(eval command=$(command) -t fjolsvin/$(PROJECT_NAME):latest)
+	- $(eval command=$(command) $(PWD)/contrib/docker)
+	- $(eval command=$(command) && unset GITHUB_TOKEN)
+	- $(eval command=$(command) && docker run --rm -it fjolsvin/$(PROJECT_NAME):$(VERSION) --version)
+	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)$(command)$(sgr0)\n'
+	$(command)
+push-image:
+ifeq (, $(shell which docker))
+	- $(error "'docker' not found in path. aborting ...")
+endif
+	- $(eval command=[ -r ~/.docker/config.json ] && docker push fjolsvin/$(PROJECT_NAME):$(VERSION))
+	- $(eval command=$(command) && [ -r ~/.docker/config.json ] && docker push fjolsvin/$(PROJECT_NAME):latest)
+	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)$(command)$(sgr0)\n'
 	$(command)
 .AFTER :
 	%if $(MAKESTATUS) == 2

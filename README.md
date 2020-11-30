@@ -11,3 +11,4 @@
 
 A small webserver, written with actix framework, that echos what you start it with. 
 It is effecitvely a rust port of [hashicorp/http-echo](https://github.com/hashicorp/http-echo) library.
+	-@printf 'about to run the following command in '$(SHELL)' shell\n$(bold)$(value command)$(sgr0)\n'

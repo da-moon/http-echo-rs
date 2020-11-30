@@ -1,16 +1,14 @@
 #[macro_use]
 extern crate log;
 extern crate actix_web;
-mod git;
 mod server;
 use clap::{App, Arg};
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
-    let latest_tag = git::tag(".").expect("fetch git version");
     std::env::set_var("RUST_LOG", "actix_web=info,server=info");
     env_logger::init();
     let matches = App::new("http-echo")
-        .version(latest_tag.as_str())
+        .version(env!("GIT_VERSION"))
         .author("da-moon <damoon.azarpazhooh@ryerson.ca>")
         .about(
             "small rust web server that serves the contents it was started with as an HTML page.",
@@ -35,6 +33,6 @@ async fn main() -> std::io::Result<()> {
 
     let l = matches.value_of("listen");
     let t = matches.value_of("text");
-    let app = server::Server::new(l.unwrap(), "http-echo-rs", latest_tag.as_str(), t.unwrap());
+    let app = server::Server::new(l.unwrap(), "http-echo-rs", env!("GIT_VERSION"), t.unwrap());
     app.run().await
 }
