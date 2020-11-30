@@ -84,8 +84,8 @@ image:
 ifeq (, $(shell which docker))
 	- $(error "'docker' not found in path. aborting ...")
 endif
-	- $(eval command=docker rmi fjolsvin/$(PROJECT_NAME):$(VERSION) --force)
-	- $(eval command=$(command) && docker rmi fjolsvin/$(PROJECT_NAME):latest --force)
+	- $(eval command=docker rmi fjolsvin/$(PROJECT_NAME):$(VERSION) --force || true)
+	- $(eval command=$(command) && docker rmi fjolsvin/$(PROJECT_NAME):latest --force || true)
 	- $(eval command=$(command) && docker system prune --force)
 	- $(eval command=$(command) && [ -r $(PWD)/.env ] && source $(PWD)/.env || true )
 	- $(eval command=$(command) && docker build)
