@@ -15,19 +15,21 @@ jobs:
           sudo apt-get install build-essential libncurses5-dev libncursesw5-dev make -yq
         env:
           DEBIAN_FRONTEND: noninteractive
-      - uses: actions/checkout@v2
+      - name: checkout to master branch | http-echo-rs
+        id: checkout
+        uses: actions/checkout@v2
         with:
           ref: master
       - name: Build Docker Container | http-echo-rs
         id: build
         run: |
           docker build \
-          --build-arg "GITHUB_REPOSITORY=$GITHUB_REPOSITORY" \
-          --build-arg "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER" \
-          --build-arg "GITHUB_ACTOR=$GITHUB_ACTOR" \
-          --build-arg "GITHUB_TOKEN=$GITHUB_TOKEN" \
-          -t fjolsvin/http-echo-rs:latest \
-          -t fjolsvin/http-echo-rs:\$(git describe --tags) \
+          --build-arg "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
+          --build-arg "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER"
+          --build-arg "GITHUB_ACTOR=$GITHUB_ACTOR"
+          --build-arg "GITHUB_TOKEN=$GITHUB_TOKEN"
+          -t "fjolsvin/http-echo-rs:latest"
+          -t "fjolsvin/http-echo-rs:$(git describe --tags)"
           ./contrib/docker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,7 +37,9 @@ jobs:
     runs-on: ubuntu-18.04
     needs: build
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout to master branch | http-echo-rs
+        id: checkout
+        uses: actions/checkout@v2
         with:
           ref: master
       - name: Login to Docker Container Repository | http-echo-rs
