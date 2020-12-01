@@ -22,8 +22,8 @@ jobs:
           ref: master
       - name: Build Docker Container | http-echo-rs
         id: build
-        run: |
-          docker build \
+        run: >
+          docker build
           --build-arg "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
           --build-arg "GITHUB_REPOSITORY_OWNER=$GITHUB_REPOSITORY_OWNER"
           --build-arg "GITHUB_ACTOR=$GITHUB_ACTOR"
