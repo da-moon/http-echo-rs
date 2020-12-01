@@ -1,8 +1,9 @@
 name: docker-image
-on:
-  push:
-    tags:
-      - "*"
+on: push
+# on:
+  # push:
+    # tags:
+    #   - "*"
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -26,6 +27,7 @@ jobs:
           --build-arg "GITHUB_ACTOR=$GITHUB_ACTOR" \
           --build-arg "GITHUB_TOKEN=$GITHUB_TOKEN" \
           -t fjolsvin/http-echo-rs:latest \
+          -t fjolsvin/http-echo-rs:$(git describe --tags) \
           ./contrib/docker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,12 +38,15 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: master
-      - name: Login to Docker Container Repository
+      - name: Login to Docker Container Repository | http-echo-rs
         id: login
         run: echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: list existing images | http-echo-rs
+        id: list
+        run: docker images
       - name: Push Docker Image | http-echo-rs
         id: push
         run: |
@@ -50,7 +55,7 @@ jobs:
     runs-on: ubuntu-18.04
     needs: push
     steps:
-      - name: Remove Docker Images
+      - name: Remove Docker Images | http-echo-rs
         id: postClean
         run: |
           docker image prune -af && \
