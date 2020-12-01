@@ -1,9 +1,8 @@
 name: docker-image
-on: push
-# on:
-  # push:
-    # tags:
-    #   - "*"
+on:
+  push:
+    tags:
+      - "*"
 jobs:
   build:
     runs-on: ubuntu-18.04
